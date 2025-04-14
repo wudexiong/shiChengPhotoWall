@@ -266,6 +266,9 @@ var demoPhotos = [
     "name": "清融.jpg"
   },
   {
+    "name": "清行.jpg"
+  },
+  {
     "name": "清詸.jpg"
   },
   {
