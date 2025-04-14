@@ -1,0 +1,112 @@
+/* Lightbox增强样式 - 用于图片预加载和平滑过渡 */
+
+/* 平滑过渡效果 */
+.lb-image {
+    transition: all 0.3s ease-in-out;
+    /* 确保图片始终显示，即使在加载过程中 */
+    opacity: 1 !important;
+    /* 防止闪烁 */
+    will-change: transform, filter;
+}
+
+/* 缩略图模式 */
+.lb-image.thumbnail-mode {
+    filter: blur(0);
+    transform: scale(1);
+    transition: filter 0.5s ease-out, transform 0.5s ease-out;
+}
+
+/* 高清图加载中效果 */
+.lb-image.loading-highres {
+    filter: blur(1px);
+    transform: scale(1.01);
+}
+
+/* 调整加载指示器样式 */
+.lb-loader {
+    opacity: 0.4;
+    transition: opacity 0.3s ease;
+    /* 默认先隐藏，只在非常需要时才显示 */
+    display: none;
+}
+
+/* 优化图片渲染 */
+.lb-container {
+    /* 平滑渲染 */
+    image-rendering: auto;
+    /* 防止闪烁 */
+    backface-visibility: hidden;
+    /* 硬件加速 */
+    transform: translateZ(0);
+}
+
+/* 提高移动设备上触摸区域透明度，使其更容易发现 */
+@media (max-width: 768px) {
+    .lb-prev, .lb-next {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    .lb-prev:hover, .lb-next:hover {
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+    
+    /* 移动设备上的滑动提示 */
+    .lb-container::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        width: 40px;
+        height: 40px;
+        opacity: 0.3;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        transform: translateY(-50%);
+        animation: swipeHint 2s infinite ease-in-out;
+        pointer-events: none;
+        z-index: 10;
+    }
+    
+    @keyframes swipeHint {
+        0% {
+            transform: translateX(0) translateY(-50%);
+            opacity: 0.2;
+        }
+        50% {
+            transform: translateX(30px) translateY(-50%);
+            opacity: 0.3;
+        }
+        100% {
+            transform: translateX(0) translateY(-50%);
+            opacity: 0.2;
+        }
+    }
+}
+
+/* 确保图片容器尺寸平滑变化 */
+.lb-outerContainer, .lb-dataContainer {
+    transition: width 0.4s ease, height 0.4s ease;
+    /* 防止容器闪烁 */
+    will-change: width, height;
+}
+
+/* 增强图片显示容器 */
+.lb-container {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* 确保图片居中显示 */
+.lb-image {
+    margin: 0 auto;
+    display: block;
+}
+
+/* 图片载入淡入效果 */
+@keyframes fadeIn {
+    from { opacity: 0.8; }
+    to { opacity: 1; }
+}
+
+.lb-image:not(.thumbnail-mode) {
+    animation: fadeIn 0.3s ease-out;
+} 
